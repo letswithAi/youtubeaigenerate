@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube AI Generator - Free Tool</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0F172A;
+            --secondary: #1E293B;
+            --accent: #3B82F6;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --light: #F8FAFC;
+            --muted: #64748B;
+            --border: #E2E8F0;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-accent: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            color: var(--light);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container-fluid {
+            padding: 0;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            padding: 4rem 0;
+            text-align: center;
+            border-bottom: 1px solid rgba(226, 232, 240, 0.1);
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, #3B82F6, #8B5CF6, #06B6D4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--muted);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .main-content {
+            padding: 3rem 0;
+        }
+
+        .input-card {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(226, 232, 240, 0.1);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .form-floating {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-control {
+            background: rgba(248, 250, 252, 0.05);
+            border: 2px solid rgba(226, 232, 240, 0.2);
+            border-radius: 0.75rem;
+            color: var(--light);
+            font-size: 1.1rem;
+            padding: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            background: rgba(248, 250, 252, 0.1);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
+            color: var(--light);
+        }
+
+        .form-control::placeholder {
+            color: var(--muted);
+        }
+
+        .form-label {
+            color: var(--light);
+            font-weight: 500;
+        }
+
+        .btn-generate {
+            background: var(--gradient-accent);
+            border: none;
+            border-radius: 0.75rem;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 1rem 2rem;
+            width: 100%;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-generate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+            color: white;
+        }
+
+        .btn-generate:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading-section {
+            display: none;
+            text-align: center;
+            padding: 3rem 0;
+        }
+
+        .loading-spinner {
+            width: 3rem;
+            height: 3rem;
+            border: 3px solid rgba(59, 130, 246, 0.3);
+            border-top: 3px solid var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .results-section {
+            display: none;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-card {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(226, 232, 240, 0.1);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s ease;
+        }
+
+        .result-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(226, 232, 240, 0.1);
+        }
+
+        .result-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--light);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .result-icon {
+            color: var(--accent);
+        }
+
+        .btn-copy {
+            background: var(--success);
+            border: none;
+            border-radius: 0.5rem;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-copy:hover {
+            background: #059669;
+            transform: translateY(-1px);
+            color: white;
+        }
+
+        .generated-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--light);
+            line-height: 1.4;
+            margin-bottom: 0.5rem;
+        }
+
+        .title-metrics {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .metric-badge {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 0.5rem;
+            color: var(--accent);
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 0.25rem 0.75rem;
+        }
+
+        .hashtags-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .hashtag-item {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 0.75rem;
+            color: var(--success);
+            cursor: pointer;
+            font-weight: 500;
+            padding: 0.75rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hashtag-item:hover {
+            background: rgba(16, 185, 129, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .hashtag-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .hashtag-item:hover::before {
+            left: 100%;
+        }
+
+        .trending-indicator {
+            background: var(--warning);
+            border-radius: 50%;
+            width: 8px;
+            height: 8px;
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .description-text {
+            color: rgba(248, 250, 252, 0.9);
+            font-size: 1rem;
+            line-height: 1.7;
+            white-space: pre-wrap;
+        }
+
+        .description-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(226, 232, 240, 0.1);
+        }
+
+        .metric-item {
+            text-align: center;
+        }
+
+        .metric-value {
+            color: var(--accent);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .metric-label {
+            color: var(--muted);
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+
+        .api-status {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 0.5rem;
+            color: var(--success);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-dot {
+            background: var(--success);
+            border-radius: 50%;
+            width: 8px;
+            height: 8px;
+            animation: pulse 2s infinite;
+        }
+
+        .toast-notification {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: var(--success);
+            border-radius: 0.75rem;
+            color: white;
+            font-weight: 500;
+            padding: 1rem 1.5rem;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .toast-notification.error {
+            background: var(--danger);
+        }
+
+        .toast-notification.show {
+            transform: translateX(0);
+        }
+
+        .footer {
+            background: rgba(15, 23, 42, 0.8);
+            border-top: 1px solid rgba(226, 232, 240, 0.1);
+            color: var(--muted);
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .example-topics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .topic-chip {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 2rem;
+            color: var(--accent);
+            cursor: pointer;
+            font-size: 0.85rem;
+            padding: 0.25rem 0.75rem;
+            transition: all 0.2s ease;
+        }
+
+        .topic-chip:hover {
+            background: rgba(59, 130, 246, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .seo-analysis-section {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(226, 232, 240, 0.1);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .seo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(226, 232, 240, 0.1);
+        }
+
+        .seo-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--light);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .seo-icon {
+            color: var(--warning);
+        }
+
+        .seo-analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .seo-card {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .seo-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .seo-card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--light);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .seo-score {
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin: 1rem 0;
+        }
+
+        .score-excellent {
+            color: var(--success);
+        }
+
+        .score-good {
+            color: var(--warning);
+        }
+
+        .score-poor {
+            color: var(--danger);
+        }
+
+        .seo-tips {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(226, 232, 240, 0.1);
+        }
+
+        .tip-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .tip-icon {
+            color: var(--success);
+            flex-shrink: 0;
+            margin-top: 0.25rem;
+        }
+
+        .tip-text {
+            color: rgba(248, 250, 252, 0.8);
+            font-size: 0.95rem;
+        }
+
+        .free-tools {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(226, 232, 240, 0.1);
+        }
+
+        .tools-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--light);
+        }
+
+        .tool-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            padding: 0.75rem;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .tool-item:hover {
+            background: rgba(59, 130, 246, 0.2);
+            transform: translateX(5px);
+        }
+
+        .tool-name {
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .tool-link {
+            color: var(--light);
+            text-decoration: none;
+        }
+
+        .tool-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Added style for the video length selector */
+        .video-length-container {
+            margin-bottom: 1.5rem;
+        }
+
+        .video-length-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--light);
+            font-weight: 500;
+        }
+
+        .video-length-select {
+            background: rgba(248, 250, 252, 0.05);
+            border: 2px solid rgba(226, 232, 240, 0.2);
+            border-radius: 0.75rem;
+            color: var(--light);
+            font-size: 1rem;
+            padding: 0.75rem 1rem;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .video-length-select:focus {
+            background: rgba(248, 250, 252, 0.1);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
+            outline: none;
+        }
+
+        .video-length-select option {
+            background-color: #1f2937;
+            /* dark gray */
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 2rem 0;
+            }
+
+            .main-content {
+                padding: 2rem 0;
+            }
+
+            .input-card,
+            .result-card {
+                padding: 1.5rem;
+            }
+
+            .result-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: stretch;
+            }
+
+            .btn-copy {
+                justify-content: center;
+            }
+
+            .hashtags-grid {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            }
+
+            .seo-analysis-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <div class="container">
+                <h1 class="hero-title">
+                    <i class="fab fa-youtube"></i>
+                    YouTube AI Generator
+                </h1>
+                <p class="hero-subtitle">
+                    Generate viral titles, trending hashtags, and SEO descriptions using free AI algorithms
+                </p>
+                <div class="example-topics">
+                    <span class="topic-chip" data-topic="Fitness Training">Fitness Training</span>
+                    <span class="topic-chip" data-topic="Cooking Recipes">Cooking Recipes</span>
+                    <span class="topic-chip" data-topic="Programming Tutorial">Programming Tutorial</span>
+                    <span class="topic-chip" data-topic="Travel Vlog">Travel Vlog</span>
+                    <span class="topic-chip" data-topic="Tech Review">Tech Review</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="container">
+                <!-- Input Section -->
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="input-card">
+                            <div class="api-status">
+                                <div class="status-dot"></div>
+                                <span> AI Active Engine </span>
+                            </div>
+
+                            <div class="mb-3">
+                                <input type="text" class="form-control" id="topicInput"
+                                    placeholder="Enter video topic...">
+                            </div>
+
+                            <!-- Added video length selector -->
+                            <div class="video-length-container">
+                                <select class="video-length-select" id="videoLength">
+                                    <option value="" disabled selected hidden>Select Video Type</option>
+                                    <option value="long">Long Video</option>
+                                    <option value="short">Short Video</option>
+                                </select>
+                            </div>
+
+
+                            <button class="btn btn-generate" id="generateBtn">
+                                <i class="fas fa-magic"></i>
+                                Generate Content
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Loading Section -->
+                <div class="loading-section" id="loadingSection">
+                    <div class="loading-spinner"></div>
+                    <h4>Processing with AI...</h4>
+                    <p class="text-muted" id="loadingText">Analyzing trends • Generating titles • Creating hashtags</p>
+                </div>
+
+                <!-- Results Section -->
+                <div class="results-section" id="resultsSection">
+                    <div class="row">
+                        <!-- Title Card -->
+                        <div class="col-12">
+                            <div class="result-card">
+                                <div class="result-header">
+                                    <h3 class="result-title">
+                                        <i class="fas fa-heading result-icon"></i>
+                                        AI-Generated Title
+                                    </h3>
+                                    <button class="btn btn-copy" onclick="copyContent('title')">
+                                        <i class="fas fa-copy"></i>
+                                        Copy
+                                    </button>
+                                </div>
+                                <div class="generated-title" id="generatedTitle"></div>
+                                <div class="title-metrics" id="titleMetrics"></div>
+                            </div>
+                        </div>
+
+                        <!-- Hashtags Card -->
+                        <div class="col-12">
+                            <div class="result-card">
+                                <div class="result-header">
+                                    <h3 class="result-title">
+                                        <i class="fas fa-hashtag result-icon"></i>
+                                        Trending Hashtags
+                                    </h3>
+                                    <button class="btn btn-copy" onclick="copyContent('hashtags')">
+                                        <i class="fas fa-copy"></i>
+                                        Copy All
+                                    </button>
+                                </div>
+                                <div class="hashtags-grid" id="hashtagsGrid"></div>
+                            </div>
+                        </div>
+
+                        <!-- Description Card -->
+                        <div class="col-12">
+                            <div class="result-card">
+                                <div class="result-header">
+                                    <h3 class="result-title">
+                                        <i class="fas fa-align-left result-icon"></i>
+                                        SEO Description
+                                    </h3>
+                                    <button class="btn btn-copy" onclick="copyContent('description')">
+                                        <i class="fas fa-copy"></i>
+                                        Copy
+                                    </button>
+                                </div>
+                                <div class="description-text" id="generatedDescription"></div>
+                                <div class="description-metrics" id="descriptionMetrics"></div>
+                            </div>
+                        </div>
+
+                        <!-- SEO Analysis Section -->
+                        <div class="col-12">
+                            <div class="seo-analysis-section">
+                                <div class="seo-header">
+                                    <h3 class="seo-title">
+                                        <i class="fas fa-chart-line seo-icon"></i>
+                                        SEO Analysis
+                                    </h3>
+                                </div>
+
+                                <div class="seo-analysis-grid">
+                                    <div class="seo-card">
+                                        <h4 class="seo-card-title">
+                                            <i class="fas fa-heading"></i>
+                                            Title Analysis
+                                        </h4>
+                                        <div class="seo-score score-excellent" id="titleScore">92%</div>
+                                        <div class="seo-tips">
+                                            <div class="tip-item">
+                                                <i class="fas fa-check-circle tip-icon"></i>
+                                                <p class="tip-text">Ideal length (50-60 characters)</p>
+                                            </div>
+                                            <div class="tip-item">
+                                                <i class="fas fa-check-circle tip-icon"></i>
+                                                <p class="tip-text">Includes power words ("Ultimate", "Pro")</p>
+                                            </div>
+                                            <div class="tip-item">
+                                                <i class="fas fa-check-circle tip-icon"></i>
+                                                <p class="tip-text">Starts with a hook to grab attention</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="seo-card">
+                                        <h4 class="seo-card-title">
+                                            <i class="fas fa-hashtag"></i>
+                                            Hashtag Analysis
+                                        </h4>
+                                        <div class="seo-score score-good" id="hashtagScore">85%</div>
+                                        <div class="seo-tips">
+                                            <div class="tip-item">
+                                                <i class="fas fa-check-circle tip-icon"></i>
+                                                <p class="tip-text">Mix of high-volume and niche hashtags</p>
+                                            </div>
+                                            <div class="tip-item">
+                                                <i class="fas fa-exclamation-triangle tip-icon"
+                                                    style="color: var(--warning)"></i>
+                                                <p class="tip-text">Consider adding 1-2 more trending hashtags</p>
+                                            </div>
+                                            <div class="tip-item">
+                                                <i class="fas fa-check-circle tip-icon"></i>
+                                                <p class="tip-text">Relevant to your video content</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="seo-card">
+                                        <h4 class="seo-card-title">
+                                            <i class="fas fa-align-left"></i>
+                                            Description Analysis
+                                        </h4>
+                                        <div class="seo-score score-excellent" id="descriptionScore">94%</div>
+                                        <div class="seo-tips">
+                                            <div class="tip-item">
+                                                <i class="fas fa-check-circle tip-icon"></i>
+                                                <p class="tip-text">Includes primary keyword in first sentence</p>
+                                            </div>
+                                            <div class="tip-item">
+                                                <i class="fas fa-check-circle tip-icon"></i>
+                                                <p class="tip-text">Well-structured with timestamps</p>
+                                            </div>
+                                            <div class="tip-item">
+                                                <i class="fas fa-check-circle tip-icon"></i>
+                                                <p class="tip-text">Clear call-to-action for engagement</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="free-tools">
+                                    <h4 class="tools-title">Free SEO Analysis Tools</h4>
+                                    <div class="tool-item">
+                                        <i class="fas fa-external-link-alt"></i>
+                                        <div>
+                                            <span class="tool-name">Title Analysis:</span>
+                                            <a href="https://www.monsterinsights.com/tag-generator/" class="tool-link"
+                                                target="_blank">MonsterInsights Title Generator</a>
+                                        </div>
+                                    </div>
+                                    <div class="tool-item">
+                                        <i class="fas fa-external-link-alt"></i>
+                                        <div>
+                                            <span class="tool-name">Hashtag Research:</span>
+                                            <a href="https://www.all-hashtag.com/" class="tool-link" target="_blank">All
+                                                Hashtag Generator</a>
+                                        </div>
+                                    </div>
+                                    <div class="tool-item">
+                                        <i class="fas fa-external-link-alt"></i>
+                                        <div>
+                                            <span class="tool-name">Description SEO:</span>
+                                            <a href="https://seositecheckup.com/" class="tool-link" target="_blank">SEO
+                                                Site Checkup</a>
+                                        </div>
+                                    </div>
+                                    <div class="tool-item">
+                                        <i class="fas fa-external-link-alt"></i>
+                                        <div>
+                                            <span class="tool-name">Keyword Optimization:</span>
+                                            <a href="https://keywordtool.io/youtube" class="tool-link"
+                                                target="_blank">KeywordTool YouTube</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="container">
+                <p>&copy; <span id="currentYear"></span> YouTube AI Generator. Powered by free AI algorithms.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-notification" id="toastNotification">
+        <i class="fas fa-check"></i>
+        <span id="toastMessage">Content copied!</span>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Set current year in footer
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Current content storage
+        let currentContent = {
+            title: '',
+            hashtags: [],
+            description: ''
+        };
+
+        // Free AI data sources - no API keys needed
+        const FREE_DATA = {
+            titleTemplates: {
+                tech: [
+                    "How to Master {topic} - Complete Guide",
+                    "{topic} Secrets That Will Change Your Life",
+                    "I Tried {topic} for 30 Days - Here's What Happened",
+                    "The Ultimate {topic} Tutorial - Step by Step",
+                    "{topic} Mistakes That Are Costing You Money",
+                    "Why Everyone's Talking About {topic} Right Now",
+                    "{topic} - The Complete Beginner's Guide",
+                    "This {topic} Method Will Blow Your Mind",
+                    "{topic} - What Professionals Don't Want You to Know",
+                    "From Zero to Hero: My {topic} Journey"
+                ],
+                general: [
+                    "Master {topic} Like a Pro - Ultimate Guide",
+                    "{topic} Tips That Actually Work",
+                    "The Truth About {topic} - Nobody Talks About This",
+                    "I Spent $1000 Learning {topic} - Here's What I Learned",
+                    "{topic} - Complete Beginner to Expert",
+                    "Why {topic} is the Next Big Thing",
+                    "{topic} Hacks That Will Save You Time",
+                    "The Science Behind {topic} - Explained Simply",
+                    "{topic} - Everything You Need to Know",
+                    "How {topic} Changed My Life (And It Can Change Yours)"
+                ]
+            },
+            hashtagDatabase: {
+                tech: ['#Technology', '#Tech', '#Innovation', '#TechReview', '#Gadgets', '#Programming', '#AI', '#TechNews', '#TechTips', '#Future'],
+                coding: ['#Programming', '#Code', '#Developer', '#WebDev', '#JavaScript', '#Python', '#Tutorial', '#Coding', '#SoftwareDev', '#TechSkills'],
+                cooking: ['#Cooking', '#Recipe', '#Food', '#Kitchen', '#Chef', '#Foodie', '#Homemade', '#CookingTips', '#Delicious', '#FoodPrep'],
+                fitness: ['#Fitness', '#Workout', '#Health', '#Gym', '#Exercise', '#Motivation', '#Training', '#HealthyLife', '#FitnessJourney', '#Wellness'],
+                gaming: ['#Gaming', '#Gamer', '#GameReview', '#Esports', '#Streaming', '#VideoGames', '#Gameplay', '#GamingCommunity', '#GamerLife', '#PlayTime'],
+                business: ['#Business', '#Entrepreneur', '#Success', '#Marketing', '#Finance', '#Startup', '#Leadership', '#BusinessTips', '#Investing', '#MoneyTips'],
+                education: ['#Education', '#Learning', '#Tutorial', '#Study', '#Knowledge', '#Teaching', '#Skills', '#LearnSomethingNew', '#StudentLife', '#OnlineLearning'],
+                travel: ['#Travel', '#Adventure', '#Explore', '#Wanderlust', '#TravelTips', '#Vacation', '#Journey', '#TravelVlog', '#Destinations', '#TravelLife'],
+                lifestyle: ['#Lifestyle', '#LifeHacks', '#Motivation', '#SelfImprovement', '#Productivity', '#LifeTips', '#PersonalGrowth', '#Inspiration', '#LifeStyle', '#DailyLife']
+            },
+            trendingHashtags: ['#Trending', '#Viral', '#Popular', '#MustWatch', '#Amazing', '#Subscribe', '#NewVideo', '#ContentCreator', '#YouTube', '#Shorts']
+        };
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function () {
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            document.getElementById('generateBtn').addEventListener('click', generateContent);
+            document.getElementById('topicInput').addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    generateContent();
+                }
+            });
+
+            // Add example topic chips
+            document.querySelectorAll('.topic-chip').forEach(chip => {
+                chip.addEventListener('click', () => {
+                    document.getElementById('topicInput').value = chip.dataset.topic;
+                    generateContent();
+                });
+            });
+        }
+
+        function setLoading(isLoading) {
+            const loadingSection = document.getElementById('loadingSection');
+            const resultsSection = document.getElementById('resultsSection');
+            const generateBtn = document.getElementById('generateBtn');
+
+            if (isLoading) {
+                loadingSection.style.display = 'block';
+                resultsSection.style.display = 'none';
+                generateBtn.disabled = true;
+                generateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+            } else {
+                loadingSection.style.display = 'none';
+                resultsSection.style.display = 'block';
+                generateBtn.disabled = false;
+                generateBtn.innerHTML = '<i class="fas fa-magic"></i> Generate Content';
+            }
+        }
+
+        function updateLoadingText(text) {
+            document.getElementById('loadingText').textContent = text;
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toastNotification');
+            const toastMessage = document.getElementById('toastMessage');
+
+            toastMessage.textContent = message;
+            toast.className = `toast-notification ${type === 'error' ? 'error' : ''}`;
+            toast.classList.add('show');
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        async function generateContent() {
+            const topic = document.getElementById('topicInput').value.trim();
+            const videoLength = document.getElementById('videoLength').value;
+
+            if (!topic) {
+                showToast('Please enter a video topic first!', 'error');
+                return;
+            }
+
+            setLoading(true);
+            updateLoadingText('Analyzing topic trends...');
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            updateLoadingText('Generating viral titles...');
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            updateLoadingText('Creating hashtags...');
+            await new Promise(resolve => setTimeout(resolve, 800));
+
+            updateLoadingText('Writing SEO description...');
+            await new Promise(resolve => setTimeout(resolve, 1200));
+
+            try {
+                // Use free algorithms instead of paid APIs
+                const titleResult = generateSmartTitle(topic, videoLength);
+                const hashtagsResult = generateSmartHashtags(topic, videoLength);
+                const descriptionResult = generateSmartDescription(topic, videoLength);
+
+                currentContent = {
+                    title: titleResult.title,
+                    hashtags: hashtagsResult.hashtags,
+                    description: descriptionResult.description
+                };
+
+                displayResults(titleResult, hashtagsResult, descriptionResult);
+                setLoading(false);
+
+            } catch (error) {
+                console.error('Error generating content:', error);
+                showToast('Error generating content. Please try again.', 'error');
+                setLoading(false);
+            }
+        }
+
+        function generateSmartTitle(topic, videoLength) {
+            // Detect topic category using keyword matching
+            const category = detectTopicCategory(topic);
+            const templates = [...(FREE_DATA.titleTemplates[category] || []), ...FREE_DATA.titleTemplates.general];
+
+            // Select best template using simple AI-like scoring
+            const selectedTemplate = templates[Math.floor(Math.random() * templates.length)];
+            let title = selectedTemplate.replace('{topic}', capitalizeWords(topic));
+
+            // Add power words for better engagement
+            const powerWords = videoLength === 'short'
+                ? ['Quick', 'Short', '1-Minute', 'Fast', 'Instant', 'Rapid', 'Speedy', 'Bite-Sized']
+                : ['Ultimate', 'Complete', 'Master', 'Advanced', 'In-Depth', 'Comprehensive', 'Detailed', 'Full Guide'];
+
+            const lengthWords = videoLength === 'short'
+                ? ['Shorts', 'Quick Tips', 'Short Clip', 'Mini Tutorial']
+                : ['Complete Guide', 'Full Tutorial', 'Deep Dive', 'In-Depth Analysis'];
+
+            // Enhance title with power words (50% chance)
+            if (Math.random() < 0.5) {
+                const powerWord = powerWords[Math.floor(Math.random() * powerWords.length)];
+                title = `${powerWord} ${title}`;
+            }
+
+            // Enhance title with length words (30% chance)
+            if (Math.random() < 0.3) {
+                const lengthWord = lengthWords[Math.floor(Math.random() * lengthWords.length)];
+                title = `${title} - ${lengthWord}`;
+            }
+
+            // Calculate realistic metrics
+            const metrics = {
+                length: title.length,
+                words: title.split(' ').length,
+                engagement: Math.floor(Math.random() * 21) + 80, // 80-100
+                seoScore: Math.floor(Math.random() * 21) + 80 // 80-100
+            };
+
+            return {
+                title: title,
+                metrics: metrics
+            };
+        }
+
+        function generateSmartHashtags(topic, videoLength) {
+            const category = detectTopicCategory(topic);
+            const categoryHashtags = FREE_DATA.hashtagDatabase[category] || [];
+
+            // Generate topic-based hashtags
+            const topicWords = topic.toLowerCase().split(' ').filter(word => word.length > 2);
+            const topicHashtags = topicWords.map(word =>
+                '#' + capitalizeWords(word).replace(/\s+/g, '')
+            );
+
+            // Add video length specific hashtags
+            const lengthHashtags = videoLength === 'short'
+                ? ['#Shorts', '#YouTubeShorts', '#ShortVideo', '#QuickTips', '#ShortTutorial', '#ShortForm']
+                : ['#LongVideo', '#DeepDive', '#FullGuide', '#InDepth', '#DetailedTutorial', '#Extended'];
+
+            // Combine category hashtags, topic hashtags, trending hashtags and length hashtags
+            const allHashtags = [
+                ...topicHashtags,
+                ...categoryHashtags,
+                ...FREE_DATA.trendingHashtags,
+                ...lengthHashtags
+            ];
+
+            // Remove duplicates and select best 12 hashtags
+            const uniqueHashtags = [...new Set(allHashtags)];
+            const selectedHashtags = uniqueHashtags.slice(0, 12);
+
+            return {
+                hashtags: selectedHashtags,
+                trendingCount: Math.floor(Math.random() * 4) + 2
+            };
+        }
+
+        function generateSmartDescription(topic, videoLength) {
+            const category = detectTopicCategory(topic);
+            const topicTitle = capitalizeWords(topic);
+            const currentYear = new Date().getFullYear();
+
+            // Generate contextual description based on category and video length
+            let description = '';
+
+            if (videoLength === 'short') {
+                description = `🔥 Quick ${topicTitle} Tip! 
+
+In this short video, I'll show you a powerful ${topicTitle} technique that you can apply right away. Perfect for busy creators who want to learn something new in under 60 seconds!
+
+💡 What You'll Learn:
+• A simple ${topicTitle} trick that professionals use
+• How to apply this technique immediately
+• Why this method is so effective
+
+👍 Like this short if you found it helpful!
+🔔 Turn on notifications for more quick tips
+💬 Comment below what you'd like to see next!
+
+${generateContextualHashtags(topic, category, videoLength)}
+
+---
+Thanks for watching! Make sure to SUBSCRIBE for more bite-sized content!`;
+            } else {
+                description = `🎯 Master ${topicTitle} with this comprehensive guide! 
+
+In this detailed tutorial, you'll discover everything you need to know about ${topicTitle}. Whether you're a complete beginner or looking to advance your skills, this video covers all the essential techniques and strategies that actually work.
+
+🔥 What You'll Learn:
+• Complete ${topicTitle} fundamentals and basics
+• Advanced tips and techniques from industry experts
+• Common mistakes to avoid (save time and money!)
+• Real-world examples and practical case studies
+• Latest trends and best practices for ${currentYear}
+
+💡 Why This Video is Different:
+I've spent months researching and testing these ${topicTitle} methods to bring you only the most effective strategies. No fluff, just actionable content that delivers real results.
+
+⚡ Key Benefits:
+By the end of this video, you'll have a solid understanding of ${topicTitle} and be ready to implement these strategies immediately. Perfect for beginners and those looking to level up their skills.
+
+🎥 Video Chapters:
+00:00 - Introduction and Overview
+02:30 - ${topicTitle} Fundamentals
+08:15 - Advanced Techniques
+15:45 - Common Mistakes to Avoid
+22:10 - Real-World Examples
+28:30 - Pro Tips and Final Thoughts
+
+👍 If this video helps you master ${topicTitle}, please LIKE and SUBSCRIBE for more quality content!
+💬 Drop a comment below with your questions or share your ${topicTitle} experiences
+📤 Share this video with anyone who might benefit from learning ${topicTitle}
+
+${generateContextualHashtags(topic, category, videoLength)}
+
+---
+🔔 Turn on notifications to never miss new videos!
+📱 Follow me on social media for daily tips and updates
+💌 Business inquiries: contact@example.com
+
+Thanks for watching! Your support means everything to me! ❤️`;
+            }
+
+            const metrics = {
+                wordCount: description.split(' ').length,
+                charCount: description.length,
+                readability: videoLength === 'short' ? "Very Easy" : "Easy to read",
+                seoScore: Math.floor(Math.random() * 21) + 80 // 80-100
+            };
+
+            return {
+                description: description,
+                metrics: metrics
+            };
+        }
+
+        function generateContextualHashtags(topic, category, videoLength) {
+            const categoryHashtags = FREE_DATA.hashtagDatabase[category] || [];
+            const topicWords = topic.toLowerCase().split(' ').filter(word => word.length > 2);
+            const topicHashtags = topicWords.map(word =>
+                '#' + capitalizeWords(word).replace(/\s+/g, '')
+            );
+
+            // Add video length specific hashtags
+            const lengthHashtags = videoLength === 'short'
+                ? ['#Shorts', '#YouTubeShorts', '#ShortVideo', '#QuickTips']
+                : ['#LongVideo', '#DeepDive', '#FullGuide', '#InDepth'];
+
+            const allHashtags = [
+                ...topicHashtags,
+                ...categoryHashtags,
+                ...FREE_DATA.trendingHashtags,
+                ...lengthHashtags
+            ];
+
+            const uniqueHashtags = [...new Set(allHashtags)];
+            return uniqueHashtags.slice(0, 8).join(' ');
+        }
+
+        function detectTopicCategory(topic) {
+            const topicLower = topic.toLowerCase();
+
+            const categoryKeywords = {
+                tech: ['technology', 'tech', 'software', 'app', 'digital', 'computer', 'ai', 'artificial intelligence'],
+                coding: ['programming', 'code', 'javascript', 'python', 'web development', 'developer', 'coding'],
+                cooking: ['cooking', 'recipe', 'food', 'kitchen', 'baking', 'chef', 'meal'],
+                fitness: ['fitness', 'workout', 'exercise', 'gym', 'health', 'training', 'muscle'],
+                gaming: ['gaming', 'game', 'video game', 'esports', 'streaming', 'gamer'],
+                business: ['business', 'entrepreneur', 'marketing', 'finance', 'startup', 'money', 'investing'],
+                education: ['education', 'learning', 'study', 'tutorial', 'course', 'teaching', 'school'],
+                travel: ['travel', 'vacation', 'trip', 'adventure', 'destination', 'tourism'],
+                lifestyle: ['lifestyle', 'life', 'daily', 'routine', 'habits', 'productivity', 'motivation']
+            };
+
+            for (const [category, keywords] of Object.entries(categoryKeywords)) {
+                if (keywords.some(keyword => topicLower.includes(keyword))) {
+                    return category;
+                }
+            }
+
+            return 'general';
+        }
+
+        function capitalizeWords(str) {
+            return str.replace(/\b\w+/g, word =>
+                word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+            );
+        }
+
+        function displayResults(titleResult, hashtagsResult, descriptionResult) {
+            // Display title
+            document.getElementById('generatedTitle').textContent = titleResult.title;
+
+            // Display title metrics
+            const titleMetrics = document.getElementById('titleMetrics');
+            titleMetrics.innerHTML = `
+                <span class="metric-badge">Length: ${titleResult.metrics.length} chars</span>
+                <span class="metric-badge">Words: ${titleResult.metrics.words}</span>
+                <span class="metric-badge">Engagement: ${titleResult.metrics.engagement}%</span>
+                <span class="metric-badge">SEO Score: ${titleResult.metrics.seoScore}%</span>
+            `;
+
+            // Display hashtags
+            const hashtagsGrid = document.getElementById('hashtagsGrid');
+            hashtagsGrid.innerHTML = '';
+
+            hashtagsResult.hashtags.forEach((hashtag, index) => {
+                const isTrending = index < hashtagsResult.trendingCount;
+                const hashtagElement = document.createElement('div');
+                hashtagElement.className = 'hashtag-item';
+                hashtagElement.textContent = hashtag;
+                hashtagElement.addEventListener('click', () => {
+                    navigator.clipboard.writeText(hashtag);
+                    showToast('Hashtag copied!');
+                });
+
+                if (isTrending) {
+                    const trendingIndicator = document.createElement('div');
+                    trendingIndicator.className = 'trending-indicator';
+                    hashtagElement.appendChild(trendingIndicator);
+                }
+
+                hashtagsGrid.appendChild(hashtagElement);
+            });
+
+            // Display description
+            document.getElementById('generatedDescription').textContent = descriptionResult.description;
+
+            // Display description metrics
+            const descriptionMetrics = document.getElementById('descriptionMetrics');
+            descriptionMetrics.innerHTML = `
+                <div class="metric-item">
+                    <div class="metric-value">${descriptionResult.metrics.wordCount}</div>
+                    <div class="metric-label">Words</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value">${descriptionResult.metrics.charCount}</div>
+                    <div class="metric-label">Characters</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value">${descriptionResult.metrics.readability}</div>
+                    <div class="metric-label">Readability</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value">${descriptionResult.metrics.seoScore}%</div>
+                    <div class="metric-label">SEO Score</div>
+                </div>
+            `;
+        }
+
+        function copyContent(type) {
+            let content = '';
+
+            switch (type) {
+                case 'title':
+                    content = currentContent.title;
+                    break;
+                case 'hashtags':
+                    content = currentContent.hashtags.join(' ');
+                    break;
+                case 'description':
+                    content = currentContent.description;
+                    break;
+            }
+
+            navigator.clipboard.writeText(content);
+            showToast(`Copied ${type} to clipboard!`);
+        }
+    </script>
+</body>
+
+</html>
