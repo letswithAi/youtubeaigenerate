@@ -4,1356 +4,932 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube AI Generator - Free Tool</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+    <title>🎙️ AI Voiceover Script Generator</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root {
-            --primary: #0F172A;
-            --secondary: #1E293B;
-            --accent: #3B82F6;
-            --success: #10B981;
-            --warning: #F59E0B;
-            --danger: #EF4444;
-            --light: #F8FAFC;
-            --muted: #64748B;
-            --border: #E2E8F0;
-            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --gradient-accent: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
-            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Space Grotesk', sans-serif;
-            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
-            color: var(--light);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            line-height: 1.6;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        .container-fluid {
-            padding: 0;
+        .main-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin: 2rem auto;
+            padding: 2rem;
+            max-width: 900px;
         }
 
-        .hero-section {
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
-            padding: 4rem 0;
+        .header {
             text-align: center;
-            border-bottom: 1px solid rgba(226, 232, 240, 0.1);
+            margin-bottom: 2rem;
         }
 
-        .hero-title {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 700;
-            background: linear-gradient(135deg, #3B82F6, #8B5CF6, #06B6D4);
+        .header h1 {
+            background: linear-gradient(45deg, #667eea, #764ba2);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 1rem;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
         }
 
-        .hero-subtitle {
-            font-size: 1.25rem;
-            color: var(--muted);
-            max-width: 600px;
-            margin: 0 auto 2rem;
-        }
-
-        .main-content {
-            padding: 3rem 0;
-        }
-
-        .input-card {
-            background: rgba(30, 41, 59, 0.8);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(226, 232, 240, 0.1);
-            border-radius: 1rem;
-            padding: 2rem;
+        .form-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 1.5rem;
             margin-bottom: 2rem;
-            box-shadow: var(--shadow-xl);
-        }
-
-        .form-floating {
-            margin-bottom: 1.5rem;
+            border: 2px solid #e9ecef;
         }
 
         .form-control {
-            background: rgba(248, 250, 252, 0.05);
-            border: 2px solid rgba(226, 232, 240, 0.2);
-            border-radius: 0.75rem;
-            color: var(--light);
-            font-size: 1.1rem;
-            padding: 1rem;
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            padding: 12px 15px;
+            font-size: 1rem;
             transition: all 0.3s ease;
         }
 
         .form-control:focus {
-            background: rgba(248, 250, 252, 0.1);
-            border-color: var(--accent);
-            box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
-            color: var(--light);
-        }
-
-        .form-control::placeholder {
-            color: var(--muted);
-        }
-
-        .form-label {
-            color: var(--light);
-            font-weight: 500;
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
         }
 
         .btn-generate {
-            background: var(--gradient-accent);
+            background: linear-gradient(45deg, #667eea, #764ba2);
             border: none;
-            border-radius: 0.75rem;
-            color: white;
+            border-radius: 25px;
+            padding: 12px 30px;
             font-size: 1.1rem;
             font-weight: 600;
-            padding: 1rem 2rem;
-            width: 100%;
+            color: white;
             transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            width: 100%;
         }
 
         .btn-generate:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
             color: white;
         }
 
         .btn-generate:disabled {
             opacity: 0.6;
-            cursor: not-allowed;
             transform: none;
+            box-shadow: none;
         }
 
-        .loading-section {
+        .script-output {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border-left: 5px solid #667eea;
             display: none;
-            text-align: center;
-            padding: 3rem 0;
         }
 
-        .loading-spinner {
-            width: 3rem;
-            height: 3rem;
-            border: 3px solid rgba(59, 130, 246, 0.3);
-            border-top: 3px solid var(--accent);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        .results-section {
-            display: none;
-            animation: fadeInUp 0.6s ease;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .result-card {
-            background: rgba(30, 41, 59, 0.8);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(226, 232, 240, 0.1);
-            border-radius: 1rem;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow-lg);
-            transition: all 0.3s ease;
-        }
-
-        .result-card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-xl);
-        }
-
-        .result-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid rgba(226, 232, 240, 0.1);
-        }
-
-        .result-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--light);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .result-icon {
-            color: var(--accent);
-        }
-
-        .btn-copy {
-            background: var(--success);
-            border: none;
-            border-radius: 0.5rem;
-            color: white;
-            font-size: 0.9rem;
-            font-weight: 500;
-            padding: 0.5rem 1rem;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .btn-copy:hover {
-            background: #059669;
-            transform: translateY(-1px);
-            color: white;
-        }
-
-        .generated-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--light);
-            line-height: 1.4;
-            margin-bottom: 0.5rem;
-        }
-
-        .title-metrics {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .metric-badge {
-            background: rgba(59, 130, 246, 0.1);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            border-radius: 0.5rem;
-            color: var(--accent);
-            font-size: 0.85rem;
-            font-weight: 500;
-            padding: 0.25rem 0.75rem;
-        }
-
-        .hashtags-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 0.75rem;
+        .script-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #333;
             margin-bottom: 1rem;
+            max-height: 400px;
+            overflow-y: auto;
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
         }
 
-        .hashtag-item {
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            border-radius: 0.75rem;
-            color: var(--success);
-            cursor: pointer;
-            font-weight: 500;
-            padding: 0.75rem;
-            text-align: center;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hashtag-item:hover {
-            background: rgba(16, 185, 129, 0.2);
-            transform: translateY(-2px);
-        }
-
-        .hashtag-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transition: left 0.5s;
-        }
-
-        .hashtag-item:hover::before {
-            left: 100%;
-        }
-
-        .trending-indicator {
-            background: var(--warning);
-            border-radius: 50%;
-            width: 8px;
-            height: 8px;
-            position: absolute;
-            top: 0.5rem;
-            right: 0.5rem;
+        .speaker-emoji {
+            font-size: 1.5rem;
+            margin-right: 0.5rem;
             animation: pulse 2s infinite;
         }
 
         @keyframes pulse {
-
-            0%,
-            100% {
-                opacity: 1;
+            0% {
+                transform: scale(1);
             }
 
             50% {
-                opacity: 0.5;
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
             }
         }
 
-        .description-text {
-            color: rgba(248, 250, 252, 0.9);
-            font-size: 1rem;
-            line-height: 1.7;
-            white-space: pre-wrap;
-        }
-
-        .description-metrics {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(226, 232, 240, 0.1);
-        }
-
-        .metric-item {
-            text-align: center;
-        }
-
-        .metric-value {
-            color: var(--accent);
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-
-        .metric-label {
-            color: var(--muted);
-            font-size: 0.85rem;
-            margin-top: 0.25rem;
-        }
-
-        .api-status {
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            border-radius: 0.5rem;
-            color: var(--success);
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-            padding: 0.75rem 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .status-dot {
-            background: var(--success);
-            border-radius: 50%;
-            width: 8px;
-            height: 8px;
-            animation: pulse 2s infinite;
-        }
-
-        .toast-notification {
-            position: fixed;
-            top: 2rem;
-            right: 2rem;
-            background: var(--success);
-            border-radius: 0.75rem;
+        .copy-btn {
+            background: #28a745;
+            border: none;
+            border-radius: 20px;
             color: white;
-            font-weight: 500;
-            padding: 1rem 1.5rem;
-            transform: translateX(400px);
-            transition: transform 0.3s ease;
-            z-index: 1000;
-            box-shadow: var(--shadow-lg);
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
         }
 
-        .toast-notification.error {
-            background: var(--danger);
-        }
-
-        .toast-notification.show {
-            transform: translateX(0);
-        }
-
-        .footer {
-            background: rgba(15, 23, 42, 0.8);
-            border-top: 1px solid rgba(226, 232, 240, 0.1);
-            color: var(--muted);
-            padding: 2rem 0;
-            text-align: center;
-            margin-top: 4rem;
-        }
-
-        .example-topics {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            justify-content: center;
-            margin-top: 1rem;
-        }
-
-        .topic-chip {
-            background: rgba(59, 130, 246, 0.1);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            border-radius: 2rem;
-            color: var(--accent);
-            cursor: pointer;
-            font-size: 0.85rem;
-            padding: 0.25rem 0.75rem;
-            transition: all 0.2s ease;
-        }
-
-        .topic-chip:hover {
-            background: rgba(59, 130, 246, 0.2);
+        .copy-btn:hover {
+            background: #218838;
             transform: translateY(-1px);
+            color: white;
         }
 
-        .seo-analysis-section {
-            background: rgba(30, 41, 59, 0.8);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(226, 232, 240, 0.1);
-            border-radius: 1rem;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow-lg);
+        .copy-success {
+            background: #17a2b8 !important;
         }
 
-        .seo-header {
+        .listen-btn {
+            background: #007bff;
+            border: none;
+            border-radius: 20px;
+            color: white;
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            margin-left: 10px;
+        }
+
+        .listen-btn:hover {
+            background: #0056b3;
+            transform: translateY(-1px);
+            color: white;
+        }
+
+        .listen-btn.playing {
+            background: #dc3545;
+            animation: pulse-button 1.5s infinite;
+        }
+
+        @keyframes pulse-button {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .audience-cards {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .audience-card {
+            flex: 1;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .audience-card:hover,
+        .audience-card.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .audience-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .script-meta {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid rgba(226, 232, 240, 0.1);
-        }
-
-        .seo-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--light);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .seo-icon {
-            color: var(--warning);
-        }
-
-        .seo-analysis-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .seo-card {
-            background: rgba(15, 23, 42, 0.6);
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .seo-card:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .seo-card-title {
-            font-size: 1.1rem;
-            font-weight: 600;
             margin-bottom: 1rem;
-            color: var(--light);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: #666;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
-        .seo-score {
-            font-size: 2rem;
-            font-weight: 700;
+        .word-count {
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+
+        .duration-slider {
+            margin-bottom: 1rem;
+        }
+
+        .duration-display {
             text-align: center;
-            margin: 1rem 0;
-        }
-
-        .score-excellent {
-            color: var(--success);
-        }
-
-        .score-good {
-            color: var(--warning);
-        }
-
-        .score-poor {
-            color: var(--danger);
-        }
-
-        .seo-tips {
-            margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 1px solid rgba(226, 232, 240, 0.1);
-        }
-
-        .tip-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.75rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .tip-icon {
-            color: var(--success);
-            flex-shrink: 0;
-            margin-top: 0.25rem;
-        }
-
-        .tip-text {
-            color: rgba(248, 250, 252, 0.8);
-            font-size: 0.95rem;
-        }
-
-        .free-tools {
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(226, 232, 240, 0.1);
-        }
-
-        .tools-title {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: 600;
+            color: #667eea;
             margin-bottom: 1rem;
-            color: var(--light);
         }
 
-        .tool-item {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 0.75rem;
-            padding: 0.75rem;
-            background: rgba(59, 130, 246, 0.1);
-            border-radius: 0.5rem;
-            transition: all 0.2s ease;
+        .progress-bar {
+            height: 6px;
+            background: #e9ecef;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 1rem;
         }
 
-        .tool-item:hover {
-            background: rgba(59, 130, 246, 0.2);
-            transform: translateX(5px);
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
         }
 
-        .tool-name {
-            color: var(--accent);
-            font-weight: 500;
+        .section-divider {
+            border-bottom: 1px solid #e9ecef;
+            margin: 1rem 0;
+            padding-bottom: 0.5rem;
+            font-weight: 600;
+            color: #667eea;
         }
 
-        .tool-link {
-            color: var(--light);
-            text-decoration: none;
+        .loading {
+            display: none;
         }
 
-        .tool-link:hover {
-            text-decoration: underline;
-        }
-
-        /* Added style for the video length selector */
-        .video-length-container {
-            margin-bottom: 1.5rem;
-        }
-
-        .video-length-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--light);
-            font-weight: 500;
-        }
-
-        .video-length-select {
-            background: rgba(248, 250, 252, 0.05);
-            border: 2px solid rgba(226, 232, 240, 0.2);
-            border-radius: 0.75rem;
-            color: var(--light);
-            font-size: 1rem;
-            padding: 0.75rem 1rem;
-            width: 100%;
+        .download-btn {
+            background: #6f42c1;
+            border: none;
+            border-radius: 20px;
+            color: white;
+            padding: 8px 20px;
+            font-size: 0.9rem;
             transition: all 0.3s ease;
+            margin-left: 10px;
         }
 
-        .video-length-select:focus {
-            background: rgba(248, 250, 252, 0.1);
-            border-color: var(--accent);
-            box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
-            outline: none;
-        }
-
-        .video-length-select option {
-            background-color: #1f2937;
-            /* dark gray */
+        .download-btn:hover {
+            background: #5a2a9a;
+            transform: translateY(-1px);
             color: white;
         }
 
+        .duration-accuracy {
+            background: #28a745;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-left: 10px;
+        }
+
+        .generation-info {
+            background: #17a2b8;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
         @media (max-width: 768px) {
-            .hero-section {
-                padding: 2rem 0;
+            .audience-cards {
+                flex-direction: column;
             }
 
-            .main-content {
-                padding: 2rem 0;
-            }
-
-            .input-card,
-            .result-card {
+            .main-container {
+                margin: 1rem;
                 padding: 1.5rem;
             }
 
-            .result-header {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .btn-group {
                 flex-direction: column;
-                gap: 1rem;
-                align-items: stretch;
+                width: 100%;
             }
 
-            .btn-copy {
-                justify-content: center;
+            .listen-btn,
+            .download-btn {
+                margin-left: 0;
+                margin-top: 10px;
             }
 
-            .hashtags-grid {
-                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            }
-
-            .seo-analysis-grid {
-                grid-template-columns: 1fr;
+            .script-meta {
+                flex-direction: column;
+                align-items: flex-start;
             }
         }
     </style>
 </head>
 
 <body>
-    <div class="container-fluid">
-        <!-- Hero Section -->
-        <div class="hero-section">
-            <div class="container">
-                <h1 class="hero-title">
-                    <i class="fab fa-youtube"></i>
-                    YouTube AI Generator
-                </h1>
-                <p class="hero-subtitle">
-                    Generate viral titles, trending hashtags, and SEO descriptions using free AI algorithms
-                </p>
-                <div class="example-topics">
-                    <span class="topic-chip" data-topic="Fitness Training">Fitness Training</span>
-                    <span class="topic-chip" data-topic="Cooking Recipes">Cooking Recipes</span>
-                    <span class="topic-chip" data-topic="Programming Tutorial">Programming Tutorial</span>
-                    <span class="topic-chip" data-topic="Travel Vlog">Travel Vlog</span>
-                    <span class="topic-chip" data-topic="Tech Review">Tech Review</span>
-                </div>
+    <div class="container">
+        <div class="main-container">
+            <div class="header">
+                <h1>🎙️ AI Voiceover Script Generator</h1>
+                <p class="text-muted">Create unique, precisely-timed scripts from 30 seconds to 7 minutes</p>
             </div>
-        </div>
 
-        <!-- Main Content -->
-        <div class="main-content">
-            <div class="container">
-                <!-- Input Section -->
-                <div class="row justify-content-center">
-                    <div class="col-lg-8">
-                        <div class="input-card">
-                            <div class="api-status">
-                                <div class="status-dot"></div>
-                                <span> AI Active Engine </span>
-                            </div>
+            <div class="form-section">
+                <div class="mb-3">
+                    <label for="topic" class="form-label fw-semibold">
+                        <i class="fas fa-lightbulb text-warning"></i> Topic
+                    </label>
+                    <input type="text" class="form-control" id="topic"
+                        placeholder="e.g., Climate Change, Digital Marketing, Space Exploration..." required>
+                </div>
 
-                            <div class="mb-3">
-                                <input type="text" class="form-control" id="topicInput"
-                                    placeholder="Enter video topic...">
-                            </div>
-
-                            <!-- Added video length selector -->
-                            <div class="video-length-container">
-                                <select class="video-length-select" id="videoLength">
-                                    <option value="" disabled selected hidden>Select Video Type</option>
-                                    <option value="long">Long Video</option>
-                                    <option value="short">Short Video</option>
-                                </select>
-                            </div>
-
-
-                            <button class="btn btn-generate" id="generateBtn">
-                                <i class="fas fa-magic"></i>
-                                Generate Content
-                            </button>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">
+                        <i class="fas fa-users text-info"></i> Target Audience
+                    </label>
+                    <div class="audience-cards">
+                        <div class="audience-card" onclick="selectAudience('kids', this)">
+                            <span class="audience-icon">👶</span>
+                            <strong>Kids</strong>
+                            <small class="d-block">Ages 5-12</small>
+                        </div>
+                        <div class="audience-card" onclick="selectAudience('students', this)">
+                            <span class="audience-icon">🎓</span>
+                            <strong>Students</strong>
+                            <small class="d-block">Ages 13-25</small>
+                        </div>
+                        <div class="audience-card" onclick="selectAudience('business', this)">
+                            <span class="audience-icon">💼</span>
+                            <strong>Business</strong>
+                            <small class="d-block">Professionals</small>
                         </div>
                     </div>
                 </div>
 
-                <!-- Loading Section -->
-                <div class="loading-section" id="loadingSection">
-                    <div class="loading-spinner"></div>
-                    <h4>Processing with AI...</h4>
-                    <p class="text-muted" id="loadingText">Analyzing trends • Generating titles • Creating hashtags</p>
+                <div class="mb-3 duration-slider">
+                    <label class="form-label fw-semibold">
+                        <i class="fas fa-clock text-success"></i> Script Duration
+                    </label>
+                    <div class="duration-display" id="durationDisplay">1 minute</div>
+                    <input type="range" class="form-range" id="durationSlider" min="0.5" max="7" step="0.5" value="1"
+                        oninput="updateDuration(this.value)">
+                    <div class="d-flex justify-content-between text-muted small">
+                        <span>30 sec</span>
+                        <span>7 min</span>
+                    </div>
                 </div>
 
-                <!-- Results Section -->
-                <div class="results-section" id="resultsSection">
-                    <div class="row">
-                        <!-- Title Card -->
-                        <div class="col-12">
-                            <div class="result-card">
-                                <div class="result-header">
-                                    <h3 class="result-title">
-                                        <i class="fas fa-heading result-icon"></i>
-                                        AI-Generated Title
-                                    </h3>
-                                    <button class="btn btn-copy" onclick="copyContent('title')">
-                                        <i class="fas fa-copy"></i>
-                                        Copy
-                                    </button>
-                                </div>
-                                <div class="generated-title" id="generatedTitle"></div>
-                                <div class="title-metrics" id="titleMetrics"></div>
-                            </div>
-                        </div>
+                <button type="button" class="btn btn-generate" onclick="generateScript()">
+                    <span id="btnText">
+                        <i class="fas fa-magic"></i> Generate Script
+                    </span>
+                    <span id="loading" class="loading">
+                        <i class="fas fa-spinner fa-spin"></i> Generating...
+                    </span>
+                </button>
+            </div>
 
-                        <!-- Hashtags Card -->
-                        <div class="col-12">
-                            <div class="result-card">
-                                <div class="result-header">
-                                    <h3 class="result-title">
-                                        <i class="fas fa-hashtag result-icon"></i>
-                                        Trending Hashtags
-                                    </h3>
-                                    <button class="btn btn-copy" onclick="copyContent('hashtags')">
-                                        <i class="fas fa-copy"></i>
-                                        Copy All
-                                    </button>
-                                </div>
-                                <div class="hashtags-grid" id="hashtagsGrid"></div>
-                            </div>
-                        </div>
+            <div class="script-output" id="scriptOutput">
+                <div class="generation-info" id="generationInfo">
+                    <i class="fas fa-sparkles"></i> Generated fresh content with precision timing
+                </div>
 
-                        <!-- Description Card -->
-                        <div class="col-12">
-                            <div class="result-card">
-                                <div class="result-header">
-                                    <h3 class="result-title">
-                                        <i class="fas fa-align-left result-icon"></i>
-                                        SEO Description
-                                    </h3>
-                                    <button class="btn btn-copy" onclick="copyContent('description')">
-                                        <i class="fas fa-copy"></i>
-                                        Copy
-                                    </button>
-                                </div>
-                                <div class="description-text" id="generatedDescription"></div>
-                                <div class="description-metrics" id="descriptionMetrics"></div>
-                            </div>
-                        </div>
+                <div class="script-meta">
+                    <div>
+                        <i class="fas fa-clock text-primary"></i>
+                        <span class="duration" id="estimatedDuration">~1 minute</span>
+                        <span class="duration-accuracy" id="accuracyBadge">Perfect Match!</span>
+                    </div>
+                    <div>
+                        <span class="word-count" id="wordCount">0 words</span>
+                        <span class="word-count ms-2" id="charCount">0 characters</span>
+                    </div>
+                </div>
 
-                        <!-- SEO Analysis Section -->
-                        <div class="col-12">
-                            <div class="seo-analysis-section">
-                                <div class="seo-header">
-                                    <h3 class="seo-title">
-                                        <i class="fas fa-chart-line seo-icon"></i>
-                                        SEO Analysis
-                                    </h3>
-                                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
 
-                                <div class="seo-analysis-grid">
-                                    <div class="seo-card">
-                                        <h4 class="seo-card-title">
-                                            <i class="fas fa-heading"></i>
-                                            Title Analysis
-                                        </h4>
-                                        <div class="seo-score score-excellent" id="titleScore">92%</div>
-                                        <div class="seo-tips">
-                                            <div class="tip-item">
-                                                <i class="fas fa-check-circle tip-icon"></i>
-                                                <p class="tip-text">Ideal length (50-60 characters)</p>
-                                            </div>
-                                            <div class="tip-item">
-                                                <i class="fas fa-check-circle tip-icon"></i>
-                                                <p class="tip-text">Includes power words ("Ultimate", "Pro")</p>
-                                            </div>
-                                            <div class="tip-item">
-                                                <i class="fas fa-check-circle tip-icon"></i>
-                                                <p class="tip-text">Starts with a hook to grab attention</p>
-                                            </div>
-                                        </div>
-                                    </div>
+                <div class="script-text" id="scriptText">
+                    <span class="speaker-emoji">🎙️</span>
+                    <span id="generatedScript"></span>
+                </div>
 
-                                    <div class="seo-card">
-                                        <h4 class="seo-card-title">
-                                            <i class="fas fa-hashtag"></i>
-                                            Hashtag Analysis
-                                        </h4>
-                                        <div class="seo-score score-good" id="hashtagScore">85%</div>
-                                        <div class="seo-tips">
-                                            <div class="tip-item">
-                                                <i class="fas fa-check-circle tip-icon"></i>
-                                                <p class="tip-text">Mix of high-volume and niche hashtags</p>
-                                            </div>
-                                            <div class="tip-item">
-                                                <i class="fas fa-exclamation-triangle tip-icon"
-                                                    style="color: var(--warning)"></i>
-                                                <p class="tip-text">Consider adding 1-2 more trending hashtags</p>
-                                            </div>
-                                            <div class="tip-item">
-                                                <i class="fas fa-check-circle tip-icon"></i>
-                                                <p class="tip-text">Relevant to your video content</p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="seo-card">
-                                        <h4 class="seo-card-title">
-                                            <i class="fas fa-align-left"></i>
-                                            Description Analysis
-                                        </h4>
-                                        <div class="seo-score score-excellent" id="descriptionScore">94%</div>
-                                        <div class="seo-tips">
-                                            <div class="tip-item">
-                                                <i class="fas fa-check-circle tip-icon"></i>
-                                                <p class="tip-text">Includes primary keyword in first sentence</p>
-                                            </div>
-                                            <div class="tip-item">
-                                                <i class="fas fa-check-circle tip-icon"></i>
-                                                <p class="tip-text">Well-structured with timestamps</p>
-                                            </div>
-                                            <div class="tip-item">
-                                                <i class="fas fa-check-circle tip-icon"></i>
-                                                <p class="tip-text">Clear call-to-action for engagement</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="free-tools">
-                                    <h4 class="tools-title">Free SEO Analysis Tools</h4>
-                                    <div class="tool-item">
-                                        <i class="fas fa-external-link-alt"></i>
-                                        <div>
-                                            <span class="tool-name">Title Analysis:</span>
-                                            <a href="https://www.monsterinsights.com/tag-generator/" class="tool-link"
-                                                target="_blank">MonsterInsights Title Generator</a>
-                                        </div>
-                                    </div>
-                                    <div class="tool-item">
-                                        <i class="fas fa-external-link-alt"></i>
-                                        <div>
-                                            <span class="tool-name">Hashtag Research:</span>
-                                            <a href="https://www.all-hashtag.com/" class="tool-link" target="_blank">All
-                                                Hashtag Generator</a>
-                                        </div>
-                                    </div>
-                                    <div class="tool-item">
-                                        <i class="fas fa-external-link-alt"></i>
-                                        <div>
-                                            <span class="tool-name">Description SEO:</span>
-                                            <a href="https://seositecheckup.com/" class="tool-link" target="_blank">SEO
-                                                Site Checkup</a>
-                                        </div>
-                                    </div>
-                                    <div class="tool-item">
-                                        <i class="fas fa-external-link-alt"></i>
-                                        <div>
-                                            <span class="tool-name">Keyword Optimization:</span>
-                                            <a href="https://keywordtool.io/youtube" class="tool-link"
-                                                target="_blank">KeywordTool YouTube</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <div class="btn-group">
+                        <button class="btn copy-btn" onclick="copyToClipboard()">
+                            <i class="fas fa-copy"></i> Copy Script
+                        </button>
+                        <button class="btn listen-btn" onclick="toggleSpeech()" id="listenBtn">
+                            <i class="fas fa-play"></i> Listen
+                        </button>
+                        <button class="btn download-btn" onclick="downloadScript()">
+                            <i class="fas fa-download"></i> Download
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Footer -->
-        <div class="footer">
-            <div class="container">
-                <p>&copy; <span id="currentYear"></span> YouTube AI Generator. Powered by free AI algorithms.</p>
-            </div>
-        </div>
     </div>
 
-    <!-- Toast Notification -->
-    <div class="toast-notification" id="toastNotification">
-        <i class="fas fa-check"></i>
-        <span id="toastMessage">Content copied!</span>
-    </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Set current year in footer
-        document.getElementById('currentYear').textContent = new Date().getFullYear();
+        let selectedAudience = '';
+        let selectedDuration = 1;
+        let speechSynthesis = window.speechSynthesis;
+        let currentUtterance = null;
+        let isPlaying = false;
 
-        // Current content storage
-        let currentContent = {
-            title: '',
-            hashtags: [],
-            description: ''
-        };
-
-        // Free AI data sources - no API keys needed
-        const FREE_DATA = {
-            titleTemplates: {
-                tech: [
-                    "How to Master {topic} - Complete Guide",
-                    "{topic} Secrets That Will Change Your Life",
-                    "I Tried {topic} for 30 Days - Here's What Happened",
-                    "The Ultimate {topic} Tutorial - Step by Step",
-                    "{topic} Mistakes That Are Costing You Money",
-                    "Why Everyone's Talking About {topic} Right Now",
-                    "{topic} - The Complete Beginner's Guide",
-                    "This {topic} Method Will Blow Your Mind",
-                    "{topic} - What Professionals Don't Want You to Know",
-                    "From Zero to Hero: My {topic} Journey"
+        // Enhanced script generation with massive content pools for uniqueness
+        const contentDatabase = {
+            kids: {
+                openings: [
+                    "Hey there, amazing young explorers! 🌟 Are you ready to discover something absolutely incredible about",
+                    "Wow! Buckle up, superstar scientists, because we're about to dive into the fascinating world of",
+                    "Listen up, curious minds! I've got something super exciting to share with you about",
+                    "Amazing discovery alert! 🚨 Young adventurers, prepare to be amazed by the wonderful secrets of",
+                    "Hello, brilliant future inventors! Get ready for an awesome journey into the magical realm of",
+                    "Attention all young scientists! Put on your thinking caps because we're exploring the incredible mysteries of",
+                    "Hey fantastic kids! Did you know there's something absolutely mind-blowing happening right now with",
+                    "Welcome, young explorers! Today we're going on an amazing adventure to learn about the spectacular world of"
                 ],
-                general: [
-                    "Master {topic} Like a Pro - Ultimate Guide",
-                    "{topic} Tips That Actually Work",
-                    "The Truth About {topic} - Nobody Talks About This",
-                    "I Spent $1000 Learning {topic} - Here's What I Learned",
-                    "{topic} - Complete Beginner to Expert",
-                    "Why {topic} is the Next Big Thing",
-                    "{topic} Hacks That Will Save You Time",
-                    "The Science Behind {topic} - Explained Simply",
-                    "{topic} - Everything You Need to Know",
-                    "How {topic} Changed My Life (And It Can Change Yours)"
+                connectors: [
+                    "It's like having magical superpowers that help us understand how",
+                    "Imagine if you could see invisible forces working together to create amazing things through",
+                    "Picture this as nature's incredible way of showing us the fantastic secrets behind",
+                    "Think of it as the universe's special recipe for making extraordinary things happen with",
+                    "It's similar to a giant puzzle where every piece fits perfectly to reveal the wonders of",
+                    "Just like your favorite superhero has special abilities, this incredible phenomenon uses its power to",
+                    "Imagine having x-ray vision that lets you see the amazing hidden world of",
+                    "It's like being a detective who gets to solve the coolest mysteries about"
+                ],
+                explanations: [
+                    "Scientists who study this amazing topic have discovered that it works in the most incredible ways! Every single day, researchers around the world are uncovering new secrets that help us understand how",
+                    "The coolest part about this fascinating subject is how it connects to so many things we see every day. When we look really closely with special tools and equipment, we can observe how",
+                    "What makes this topic absolutely mind-blowing is that it's been happening for millions and millions of years, even before dinosaurs walked the Earth! Throughout all this time, it has been",
+                    "Here's where it gets really exciting - this incredible phenomenon doesn't just happen in one place. It occurs all around us, from the tiniest atoms to the biggest galaxies, constantly",
+                    "The most amazing thing about this subject is how it helps solve real problems and makes our world better. Smart scientists and engineers use their knowledge of this to create inventions that",
+                    "But wait, there's even more to discover! This fascinating topic is like a never-ending treasure chest of knowledge. Every time scientists think they understand it completely, they find new layers that reveal how"
+                ],
+                examples: [
+                    "Let me give you a super cool example that will blow your mind! Imagine if you could watch this happening in slow motion - you would see incredible things dancing and moving together to create something that",
+                    "Here's an awesome way to think about it: remember how amazed you feel when you see a rainbow after it rains? Well, this topic creates even more spectacular shows in nature that",
+                    "Think about your favorite magic trick where something appears from nowhere. This amazing phenomenon works just like magic, but it's real science that transforms ordinary things into extraordinary results by",
+                    "Picture the most beautiful fireworks display you've ever seen. Now imagine that this incredible subject creates its own natural fireworks show every single day, lighting up the world with processes that",
+                    "Remember the feeling of wonder when you first learned to ride a bike or swim? This topic gives scientists that same feeling of amazement because it reveals secrets about our universe that"
+                ],
+                developments: [
+                    "The exciting news is that young people just like you are already becoming the next generation of scientists and inventors! Kids around the world are asking brilliant questions and making discoveries that help us learn more about",
+                    "What's really incredible is that this field of study is growing faster than ever before. New technologies are being invented every year that let us see deeper, measure more accurately, and understand better how",
+                    "The future is incredibly bright because smart kids who are curious about science today will grow up to become the researchers who make the next big breakthroughs in understanding",
+                    "Amazing opportunities are opening up all the time for young scientists. Schools and universities are creating special programs where kids can learn hands-on about the fascinating world of",
+                    "The best part is that you don't have to wait until you're grown up to start exploring this topic! There are experiments you can do at home, books you can read, and videos you can watch to discover more about"
+                ],
+                conclusions: [
+                    "So remember, young scientists - every expert was once a beginner just like you! Keep asking questions, stay curious, and never stop exploring. The world needs brilliant minds like yours to solve tomorrow's mysteries! 🌟",
+                    "The most important thing is to keep that spark of curiosity burning bright. Who knows? Maybe one day you'll be the scientist who makes the next incredible discovery that changes our understanding of the world! ✨",
+                    "Keep exploring, keep learning, and keep believing in the power of science! Every question you ask brings us one step closer to understanding the amazing universe we live in. You're already part of the adventure! 🚀",
+                    "Remember that science is everywhere around you, waiting to be discovered. Stay curious, ask lots of questions, and never be afraid to explore new ideas. The future belongs to young scientists like you! 🔬"
                 ]
             },
-            hashtagDatabase: {
-                tech: ['#Technology', '#Tech', '#Innovation', '#TechReview', '#Gadgets', '#Programming', '#AI', '#TechNews', '#TechTips', '#Future'],
-                coding: ['#Programming', '#Code', '#Developer', '#WebDev', '#JavaScript', '#Python', '#Tutorial', '#Coding', '#SoftwareDev', '#TechSkills'],
-                cooking: ['#Cooking', '#Recipe', '#Food', '#Kitchen', '#Chef', '#Foodie', '#Homemade', '#CookingTips', '#Delicious', '#FoodPrep'],
-                fitness: ['#Fitness', '#Workout', '#Health', '#Gym', '#Exercise', '#Motivation', '#Training', '#HealthyLife', '#FitnessJourney', '#Wellness'],
-                gaming: ['#Gaming', '#Gamer', '#GameReview', '#Esports', '#Streaming', '#VideoGames', '#Gameplay', '#GamingCommunity', '#GamerLife', '#PlayTime'],
-                business: ['#Business', '#Entrepreneur', '#Success', '#Marketing', '#Finance', '#Startup', '#Leadership', '#BusinessTips', '#Investing', '#MoneyTips'],
-                education: ['#Education', '#Learning', '#Tutorial', '#Study', '#Knowledge', '#Teaching', '#Skills', '#LearnSomethingNew', '#StudentLife', '#OnlineLearning'],
-                travel: ['#Travel', '#Adventure', '#Explore', '#Wanderlust', '#TravelTips', '#Vacation', '#Journey', '#TravelVlog', '#Destinations', '#TravelLife'],
-                lifestyle: ['#Lifestyle', '#LifeHacks', '#Motivation', '#SelfImprovement', '#Productivity', '#LifeTips', '#PersonalGrowth', '#Inspiration', '#LifeStyle', '#DailyLife']
+            students: {
+                openings: [
+                    "As we advance in our academic journey, it becomes increasingly important to understand complex concepts that will shape our future careers. Today, we're exploring the cutting-edge field of",
+                    "In an era of rapid technological advancement and global challenges, students like you are uniquely positioned to make a difference by mastering the principles of",
+                    "Contemporary higher education demands that we think critically about interdisciplinary subjects that connect multiple fields of study. One such fascinating area is",
+                    "The 21st century presents unprecedented opportunities for students who can bridge theoretical knowledge with practical applications. This is particularly evident in the evolving field of",
+                    "Modern academic excellence requires understanding how traditional disciplines intersect with emerging technologies and global trends. A prime example of this convergence is found in",
+                    "Today's students are tomorrow's leaders in science, technology, business, and social innovation. Understanding the complexities and opportunities within the field of",
+                    "Critical thinking and analytical skills are essential for navigating our complex world. These abilities are particularly important when studying advanced topics like",
+                    "The integration of technology, research, and real-world problem-solving defines modern education. This integration is beautifully demonstrated in the study of"
+                ],
+                analyses: [
+                    "presents a unique opportunity to develop both technical expertise and strategic thinking abilities that are highly valued in today's competitive job market",
+                    "demonstrates how theoretical frameworks can be applied to solve real-world challenges while advancing our understanding of fundamental principles",
+                    "represents the convergence of multiple disciplines, requiring students to synthesize knowledge from various fields to achieve comprehensive understanding",
+                    "offers pathways to innovation and discovery that could define the next decade of technological and social progress",
+                    "provides essential foundations for careers in research, development, policy-making, and entrepreneurship across numerous industries",
+                    "illustrates how academic knowledge translates into practical solutions for some of the most pressing challenges facing our global society"
+                ],
+                research: [
+                    "Recent research from leading universities and institutions has revealed breakthrough findings that fundamentally change how we approach this subject. Studies published in top-tier journals demonstrate that",
+                    "The academic community has witnessed remarkable developments in this field over the past five years. Peer-reviewed research consistently shows that methodologies in this area",
+                    "Interdisciplinary collaboration between departments has yielded unprecedented insights into the mechanisms and applications of this field. Research teams have discovered that",
+                    "Graduate-level research projects are producing results that have immediate applications in industry and policy. These studies reveal how advanced understanding of this topic",
+                    "International research collaborations are advancing our knowledge at an accelerated pace. Cross-cultural studies and comparative analyses demonstrate that",
+                    "Evidence-based research methodologies are uncovering layers of complexity that were previously unknown. Systematic reviews and meta-analyses confirm that"
+                ],
+                applications: [
+                    "The practical applications of this knowledge extend far beyond academic settings into real-world career opportunities. Professionals working in this field are actively engaged in projects that",
+                    "Industry partnerships with universities are creating internship and research opportunities that give students direct experience with cutting-edge applications. These programs focus on",
+                    "Start-up companies and established corporations are seeking graduates who understand both the theoretical foundations and practical implementations of this field. They're specifically looking for skills in",
+                    "Government agencies and non-profit organizations are increasingly relying on experts in this area to develop policies and programs that address societal challenges through",
+                    "International organizations and global initiatives are creating career paths for professionals who can apply advanced knowledge to solve complex problems involving",
+                    "The consulting industry has identified this field as a high-growth area, with demand increasing for specialists who can guide organizations in implementing solutions based on"
+                ],
+                implications: [
+                    "Understanding these concepts prepares you for graduate school and advanced research opportunities where you'll contribute to expanding human knowledge and developing solutions for future challenges",
+                    "The analytical and problem-solving skills developed through studying this subject are transferable to numerous career paths and provide a foundation for lifelong learning and adaptation",
+                    "Mastery of this field positions you to be part of the next generation of innovators and leaders who will shape policy, drive technological advancement, and address global challenges",
+                    "The interdisciplinary nature of this knowledge creates opportunities for collaboration across fields and prepares you for the increasingly connected nature of modern professional work",
+                    "These concepts form the building blocks for understanding emerging technologies and social trends that will define the next phase of human development and progress"
+                ],
+                conclusions: [
+                    "Your generation has the opportunity to apply this knowledge to create meaningful change in the world. The foundation you're building today will enable you to contribute to solutions for tomorrow's challenges.",
+                    "The skills and understanding you develop in this field will serve you throughout your career, regardless of the specific path you choose. This knowledge is an investment in your intellectual future.",
+                    "As you continue your academic journey, remember that mastering complex concepts like these prepares you for leadership roles in an increasingly sophisticated global society.",
+                    "The intersection of theory and practice in this field exemplifies the kind of learning that produces graduates capable of making significant contributions to their chosen professions and society at large."
+                ]
             },
-            trendingHashtags: ['#Trending', '#Viral', '#Popular', '#MustWatch', '#Amazing', '#Subscribe', '#NewVideo', '#ContentCreator', '#YouTube', '#Shorts']
+            business: {
+                openings: [
+                    "In today's rapidly evolving business landscape, strategic leaders understand that sustainable competitive advantage comes from organizations that can effectively leverage",
+                    "Market intelligence and comprehensive industry analysis consistently demonstrate that the most successful companies are those that have mastered the art and science of",
+                    "Forward-thinking executives and board members are recognizing that long-term organizational success depends on the strategic implementation of advanced approaches to",
+                    "Global economic trends and emerging market dynamics have created unprecedented opportunities for businesses that can systematically optimize their approach to",
+                    "Enterprise-level decision making in the 21st century requires sophisticated understanding of how operational excellence intersects with strategic innovation in",
+                    "Organizational transformation and sustainable growth are achieved by companies that understand how to align their core competencies with market opportunities through",
+                    "Industry leaders and management consultants agree that the next phase of business evolution will be defined by organizations that can master the complexities of",
+                    "Stakeholder value creation and long-term profitability are increasingly dependent on management teams that can execute strategic initiatives centered around"
+                ],
+                value_props: [
+                    "delivers measurable ROI through systematic optimization of operational processes, customer engagement strategies, and market positioning initiatives that drive sustainable revenue growth",
+                    "creates competitive differentiation by enabling organizations to respond more effectively to market changes while maintaining operational efficiency and customer satisfaction",
+                    "generates sustainable value through the integration of data-driven decision making, process innovation, and strategic resource allocation across all business functions",
+                    "transforms organizational capabilities by aligning human capital development with technological advancement and market opportunity identification",
+                    "establishes market leadership positions through the systematic development of proprietary methodologies and best practices that competitors cannot easily replicate",
+                    "optimizes resource utilization and risk management while simultaneously expanding market share and improving customer lifetime value metrics"
+                ],
+                implementation: [
+                    "The strategic implementation framework requires comprehensive stakeholder analysis, cross-functional team coordination, and systematic change management processes. Leading organizations typically begin by conducting thorough assessments that",
+                    "Best practices in this area emphasize the importance of phased rollouts, pilot program validation, and continuous performance monitoring. Successful implementations invariably include protocols that",
+                    "Executive leadership commitment and board-level oversight are essential components of successful deployment strategies. The most effective approaches integrate governance structures that",
+                    "Organizational readiness assessment and capability building are prerequisite activities that determine implementation success rates. Companies with the highest success rates prioritize initiatives that",
+                    "Resource allocation and timeline management require sophisticated project management methodologies and risk mitigation strategies. Industry benchmarks indicate that organizations achieving optimal results focus on",
+                    "Technology integration and process optimization must be carefully balanced with human capital development and organizational culture transformation. This balance is achieved through systematic approaches that"
+                ],
+                results: [
+                    "Performance metrics from early adopters demonstrate significant improvements in key performance indicators including revenue growth, operational margins, customer retention rates, and market share expansion. These organizations report that",
+                    "ROI calculations and cost-benefit analyses consistently show that organizations implementing these strategies achieve payback periods of 12-18 months with ongoing benefits that compound annually through",
+                    "Competitive analysis reveals that companies utilizing these methodologies outperform industry benchmarks by substantial margins across multiple performance categories. The sustained advantages result from",
+                    "Long-term studies tracking organizational performance over 3-5 year periods indicate that businesses employing these strategies maintain market leadership positions even during economic volatility through",
+                    "Customer satisfaction surveys and brand equity measurements show that organizations implementing these approaches achieve higher loyalty scores and premium pricing capabilities that translate into",
+                    "Financial analysis and stakeholder value assessments demonstrate that these strategies generate sustainable cash flow improvements and enhanced enterprise valuation multiples by"
+                ],
+                competitive: [
+                    "Market dynamics and competitive pressures are creating urgent needs for organizations to adopt these strategies or risk losing market position to more agile competitors who understand how to leverage",
+                    "Industry consolidation and technological disruption are accelerating the pace at which companies must transform their approaches to remain relevant in markets where success increasingly depends on",
+                    "Global economic conditions and supply chain complexities are forcing businesses to develop more sophisticated capabilities in areas that directly relate to their ability to excel at",
+                    "Regulatory changes and stakeholder expectations are establishing new standards for corporate performance that can only be met by organizations that have developed advanced competencies in",
+                    "Digital transformation and data analytics are becoming table stakes for competitive participation, but true differentiation comes from organizations that can integrate these tools with strategic excellence in"
+                ],
+                conclusions: [
+                    "The organizations that will dominate tomorrow's markets are those that take decisive action today to implement these proven strategies. Leadership teams that delay these initiatives risk irreversible competitive disadvantage.",
+                    "Strategic implementation of these principles represents not just an opportunity for improvement, but a necessary evolution for organizations committed to long-term success and stakeholder value creation.",
+                    "The time for incremental change has passed. Market leaders are making bold investments in these capabilities now, and the gap between leaders and followers will only continue to widen.",
+                    "Your organization's future success depends on the strategic decisions you make today regarding these critical capabilities. The question is not whether to act, but how quickly you can implement these transformative approaches."
+                ]
+            }
         };
 
-        // Initialize app
-        document.addEventListener('DOMContentLoaded', function () {
-            setupEventListeners();
-        });
+        // Generate unique seed for randomization each time
+        function generateUniqueSeed() {
+            return Date.now() + Math.random();
+        }
 
-        function setupEventListeners() {
-            document.getElementById('generateBtn').addEventListener('click', generateContent);
-            document.getElementById('topicInput').addEventListener('keypress', function (e) {
-                if (e.key === 'Enter') {
-                    generateContent();
-                }
+        // Seeded random number generator for reproducible yet unique content
+        function seededRandom(seed) {
+            const x = Math.sin(seed) * 10000;
+            return x - Math.floor(x);
+        }
+
+        function updateDuration(value) {
+            selectedDuration = parseFloat(value);
+            const displayText = selectedDuration < 1 ?
+                `${Math.round(selectedDuration * 60)} seconds` :
+                `${selectedDuration} minute${selectedDuration > 1 ? 's' : ''}`;
+            document.getElementById('durationDisplay').textContent = displayText;
+        }
+
+        function selectAudience(audience, element) {
+            document.querySelectorAll('.audience-card').forEach(card => {
+                card.classList.remove('selected');
             });
 
-            // Add example topic chips
-            document.querySelectorAll('.topic-chip').forEach(chip => {
-                chip.addEventListener('click', () => {
-                    document.getElementById('topicInput').value = chip.dataset.topic;
-                    generateContent();
-                });
-            });
+            element.classList.add('selected');
+            selectedAudience = audience;
         }
 
-        function setLoading(isLoading) {
-            const loadingSection = document.getElementById('loadingSection');
-            const resultsSection = document.getElementById('resultsSection');
-            const generateBtn = document.getElementById('generateBtn');
-
-            if (isLoading) {
-                loadingSection.style.display = 'block';
-                resultsSection.style.display = 'none';
-                generateBtn.disabled = true;
-                generateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
-            } else {
-                loadingSection.style.display = 'none';
-                resultsSection.style.display = 'block';
-                generateBtn.disabled = false;
-                generateBtn.innerHTML = '<i class="fas fa-magic"></i> Generate Content';
-            }
-        }
-
-        function updateLoadingText(text) {
-            document.getElementById('loadingText').textContent = text;
-        }
-
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toastNotification');
-            const toastMessage = document.getElementById('toastMessage');
-
-            toastMessage.textContent = message;
-            toast.className = `toast-notification ${type === 'error' ? 'error' : ''}`;
-            toast.classList.add('show');
-
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
-        }
-
-        async function generateContent() {
-            const topic = document.getElementById('topicInput').value.trim();
-            const videoLength = document.getElementById('videoLength').value;
+        function generateScript() {
+            const topic = document.getElementById('topic').value.trim();
 
             if (!topic) {
-                showToast('Please enter a video topic first!', 'error');
+                alert('Please enter a topic!');
                 return;
             }
 
-            setLoading(true);
-            updateLoadingText('Analyzing topic trends...');
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            if (!selectedAudience) {
+                alert('Please select a target audience!');
+                return;
+            }
 
-            updateLoadingText('Generating viral titles...');
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            showLoading(true);
 
-            updateLoadingText('Creating hashtags...');
-            await new Promise(resolve => setTimeout(resolve, 800));
+            // Simulate real-time generation with progressive updates
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress > 90) progress = 90;
+                document.getElementById('progressFill').style.width = progress + '%';
+            }, 100);
 
-            updateLoadingText('Writing SEO description...');
-            await new Promise(resolve => setTimeout(resolve, 1200));
+            setTimeout(() => {
+                clearInterval(progressInterval);
+                document.getElementById('progressFill').style.width = '100%';
 
-            try {
-                // Use free algorithms instead of paid APIs
-                const titleResult = generateSmartTitle(topic, videoLength);
-                const hashtagsResult = generateSmartHashtags(topic, videoLength);
-                const descriptionResult = generateSmartDescription(topic, videoLength);
+                const script = generateUniqueScript(topic, selectedAudience, selectedDuration);
+                displayScript(script);
+                showLoading(false);
+            }, 2000 + Math.random() * 1000);
+        }
 
-                currentContent = {
-                    title: titleResult.title,
-                    hashtags: hashtagsResult.hashtags,
-                    description: descriptionResult.description
+        function generateUniqueScript(topic, audience, duration) {
+            const seed = generateUniqueSeed();
+            const database = contentDatabase[audience];
+            const targetWords = Math.round(duration * 150); // Approximately 150 words per minute
+
+            let script = '';
+            let wordCount = 0;
+
+            // Generate opening (20-25% of content)
+            const opening = getRandomElement(database.openings, seed * 1.1) + ' ' + topic + '.';
+            script += opening + '\n\n';
+            wordCount += countWords(opening);
+
+            // Add main content sections based on audience type
+            if (audience === 'kids') {
+                // For kids: simple explanations and examples
+                const connector = getRandomElement(database.connectors, seed * 1.3);
+                const explanation = getRandomElement(database.explanations, seed * 1.5);
+                const example = getRandomElement(database.examples, seed * 1.7);
+
+                script += connector + ' ' + topic.toLowerCase() + '.\n\n';
+                script += explanation + ' ' + topic.toLowerCase() + ' works in amazing ways!\n\n';
+                script += example + ' helps us understand ' + topic.toLowerCase() + ' better.\n\n';
+
+                wordCount += countWords(connector) + countWords(explanation) + countWords(example) + 15;
+
+            } else if (audience === 'students') {
+                // For students: analytical and research-based content
+                const analysis = getRandomElement(database.analyses, seed * 1.4);
+                const research = getRandomElement(database.research, seed * 1.6);
+                const application = getRandomElement(database.applications, seed * 1.8);
+
+                script += topic + ' ' + analysis + '.\n\n';
+                script += research + ' ' + topic.toLowerCase() + ' continues to evolve rapidly.\n\n';
+                script += application + ' innovative solutions in ' + topic.toLowerCase() + '.\n\n';
+
+                wordCount += countWords(analysis) + countWords(research) + countWords(application) + 20;
+
+            } else if (audience === 'business') {
+                // For business: strategic and ROI-focused content
+                const valueProp = getRandomElement(database.value_props, seed * 1.2);
+                const implementation = getRandomElement(database.implementation, seed * 1.9);
+                const results = getRandomElement(database.results, seed * 2.1);
+
+                script += topic + ' ' + valueProp + '.\n\n';
+                script += implementation + ' strategic excellence in ' + topic.toLowerCase() + '.\n\n';
+                script += results + ' sustainable competitive advantages through ' + topic.toLowerCase() + '.\n\n';
+
+                wordCount += countWords(valueProp) + countWords(implementation) + countWords(results) + 25;
+            }
+
+            // Add additional content if needed to reach target duration
+            while (wordCount < targetWords * 0.85) {
+                if (audience === 'kids') {
+                    const development = getRandomElement(database.developments, seed * (2.5 + Math.random()));
+                    const additionalContent = development + ' ' + topic.toLowerCase() + '!';
+                    script += additionalContent + '\n\n';
+                    wordCount += countWords(additionalContent);
+                } else if (audience === 'students') {
+                    const implication = getRandomElement(database.implications, seed * (2.7 + Math.random()));
+                    const additionalContent = implication + ' in the field of ' + topic.toLowerCase() + '.';
+                    script += additionalContent + '\n\n';
+                    wordCount += countWords(additionalContent);
+                } else {
+                    const competitive = getRandomElement(database.competitive, seed * (2.9 + Math.random()));
+                    const additionalContent = competitive + ' ' + topic.toLowerCase() + '.';
+                    script += additionalContent + '\n\n';
+                    wordCount += countWords(additionalContent);
+                }
+            }
+
+            // Add conclusion (15-20% of content)
+            const conclusion = getRandomElement(database.conclusions, seed * 3.1);
+            script += conclusion;
+            wordCount += countWords(conclusion);
+
+            return {
+                text: script.trim(),
+                wordCount: wordCount,
+                estimatedDuration: Math.round((wordCount / 150) * 60) / 60
+            };
+        }
+
+        function getRandomElement(array, seed) {
+            const index = Math.floor(seededRandom(seed) * array.length);
+            return array[index];
+        }
+
+        function countWords(text) {
+            return text.trim().split(/\s+/).length;
+        }
+
+        function displayScript(scriptData) {
+            const outputDiv = document.getElementById('scriptOutput');
+            const scriptText = document.getElementById('generatedScript');
+            const wordCountSpan = document.getElementById('wordCount');
+            const charCountSpan = document.getElementById('charCount');
+            const durationSpan = document.getElementById('estimatedDuration');
+            const accuracyBadge = document.getElementById('accuracyBadge');
+
+            scriptText.textContent = scriptData.text;
+            wordCountSpan.textContent = `${scriptData.wordCount} words`;
+            charCountSpan.textContent = `${scriptData.text.length} characters`;
+
+            const actualMinutes = scriptData.estimatedDuration;
+            const targetMinutes = selectedDuration;
+            const accuracy = Math.abs(actualMinutes - targetMinutes);
+
+            if (actualMinutes < 1) {
+                durationSpan.textContent = `~${Math.round(actualMinutes * 60)} seconds`;
+            } else {
+                durationSpan.textContent = `~${actualMinutes.toFixed(1)} minutes`;
+            }
+
+            // Update accuracy badge
+            if (accuracy <= 0.1) {
+                accuracyBadge.textContent = 'Perfect Match!';
+                accuracyBadge.className = 'duration-accuracy';
+                accuracyBadge.style.background = '#28a745';
+            } else if (accuracy <= 0.3) {
+                accuracyBadge.textContent = 'Very Close!';
+                accuracyBadge.className = 'duration-accuracy';
+                accuracyBadge.style.background = '#17a2b8';
+            } else {
+                accuracyBadge.textContent = 'Good Match';
+                accuracyBadge.className = 'duration-accuracy';
+                accuracyBadge.style.background = '#6f42c1';
+            }
+
+            outputDiv.style.display = 'block';
+            outputDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showLoading(show) {
+            const btnText = document.getElementById('btnText');
+            const loading = document.getElementById('loading');
+            const button = document.querySelector('.btn-generate');
+
+            if (show) {
+                btnText.style.display = 'none';
+                loading.style.display = 'inline';
+                button.disabled = true;
+            } else {
+                btnText.style.display = 'inline';
+                loading.style.display = 'none';
+                button.disabled = false;
+                document.getElementById('progressFill').style.width = '0%';
+            }
+        }
+
+        function copyToClipboard() {
+            const scriptText = document.getElementById('generatedScript').textContent;
+            navigator.clipboard.writeText(scriptText).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                btn.classList.add('copy-success');
+
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.remove('copy-success');
+                }, 2000);
+            }).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = scriptText;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+
+                const btn = document.querySelector('.copy-btn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                btn.classList.add('copy-success');
+
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.remove('copy-success');
+                }, 2000);
+            });
+        }
+
+        function toggleSpeech() {
+            const btn = document.getElementById('listenBtn');
+
+            if (isPlaying) {
+                speechSynthesis.cancel();
+                btn.innerHTML = '<i class="fas fa-play"></i> Listen';
+                btn.classList.remove('playing');
+                isPlaying = false;
+            } else {
+                const text = document.getElementById('generatedScript').textContent;
+                currentUtterance = new SpeechSynthesisUtterance(text);
+
+                // Configure speech settings
+                currentUtterance.rate = 0.9;
+                currentUtterance.pitch = 1;
+                currentUtterance.volume = 1;
+
+                currentUtterance.onstart = () => {
+                    btn.innerHTML = '<i class="fas fa-stop"></i> Stop';
+                    btn.classList.add('playing');
+                    isPlaying = true;
                 };
 
-                displayResults(titleResult, hashtagsResult, descriptionResult);
-                setLoading(false);
+                currentUtterance.onend = () => {
+                    btn.innerHTML = '<i class="fas fa-play"></i> Listen';
+                    btn.classList.remove('playing');
+                    isPlaying = false;
+                };
 
-            } catch (error) {
-                console.error('Error generating content:', error);
-                showToast('Error generating content. Please try again.', 'error');
-                setLoading(false);
+                currentUtterance.onerror = () => {
+                    btn.innerHTML = '<i class="fas fa-play"></i> Listen';
+                    btn.classList.remove('playing');
+                    isPlaying = false;
+                };
+
+                speechSynthesis.speak(currentUtterance);
             }
         }
 
-        function generateSmartTitle(topic, videoLength) {
-            // Detect topic category using keyword matching
-            const category = detectTopicCategory(topic);
-            const templates = [...(FREE_DATA.titleTemplates[category] || []), ...FREE_DATA.titleTemplates.general];
+        function downloadScript() {
+            const scriptText = document.getElementById('generatedScript').textContent;
+            const topic = document.getElementById('topic').value || 'script';
+            const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
 
-            // Select best template using simple AI-like scoring
-            const selectedTemplate = templates[Math.floor(Math.random() * templates.length)];
-            let title = selectedTemplate.replace('{topic}', capitalizeWords(topic));
-
-            // Add power words for better engagement
-            const powerWords = videoLength === 'short'
-                ? ['Quick', 'Short', '1-Minute', 'Fast', 'Instant', 'Rapid', 'Speedy', 'Bite-Sized']
-                : ['Ultimate', 'Complete', 'Master', 'Advanced', 'In-Depth', 'Comprehensive', 'Detailed', 'Full Guide'];
-
-            const lengthWords = videoLength === 'short'
-                ? ['Shorts', 'Quick Tips', 'Short Clip', 'Mini Tutorial']
-                : ['Complete Guide', 'Full Tutorial', 'Deep Dive', 'In-Depth Analysis'];
-
-            // Enhance title with power words (50% chance)
-            if (Math.random() < 0.5) {
-                const powerWord = powerWords[Math.floor(Math.random() * powerWords.length)];
-                title = `${powerWord} ${title}`;
-            }
-
-            // Enhance title with length words (30% chance)
-            if (Math.random() < 0.3) {
-                const lengthWord = lengthWords[Math.floor(Math.random() * lengthWords.length)];
-                title = `${title} - ${lengthWord}`;
-            }
-
-            // Calculate realistic metrics
-            const metrics = {
-                length: title.length,
-                words: title.split(' ').length,
-                engagement: Math.floor(Math.random() * 21) + 80, // 80-100
-                seoScore: Math.floor(Math.random() * 21) + 80 // 80-100
-            };
-
-            return {
-                title: title,
-                metrics: metrics
-            };
-        }
-
-        function generateSmartHashtags(topic, videoLength) {
-            const category = detectTopicCategory(topic);
-            const categoryHashtags = FREE_DATA.hashtagDatabase[category] || [];
-
-            // Generate topic-based hashtags
-            const topicWords = topic.toLowerCase().split(' ').filter(word => word.length > 2);
-            const topicHashtags = topicWords.map(word =>
-                '#' + capitalizeWords(word).replace(/\s+/g, '')
-            );
-
-            // Add video length specific hashtags
-            const lengthHashtags = videoLength === 'short'
-                ? ['#Shorts', '#YouTubeShorts', '#ShortVideo', '#QuickTips', '#ShortTutorial', '#ShortForm']
-                : ['#LongVideo', '#DeepDive', '#FullGuide', '#InDepth', '#DetailedTutorial', '#Extended'];
-
-            // Combine category hashtags, topic hashtags, trending hashtags and length hashtags
-            const allHashtags = [
-                ...topicHashtags,
-                ...categoryHashtags,
-                ...FREE_DATA.trendingHashtags,
-                ...lengthHashtags
-            ];
-
-            // Remove duplicates and select best 12 hashtags
-            const uniqueHashtags = [...new Set(allHashtags)];
-            const selectedHashtags = uniqueHashtags.slice(0, 12);
-
-            return {
-                hashtags: selectedHashtags,
-                trendingCount: Math.floor(Math.random() * 4) + 2
-            };
-        }
-
-        function generateSmartDescription(topic, videoLength) {
-            const category = detectTopicCategory(topic);
-            const topicTitle = capitalizeWords(topic);
-            const currentYear = new Date().getFullYear();
-
-            // Generate contextual description based on category and video length
-            let description = '';
-
-            if (videoLength === 'short') {
-                description = `🔥 Quick ${topicTitle} Tip! 
-
-In this short video, I'll show you a powerful ${topicTitle} technique that you can apply right away. Perfect for busy creators who want to learn something new in under 60 seconds!
-
-💡 What You'll Learn:
-• A simple ${topicTitle} trick that professionals use
-• How to apply this technique immediately
-• Why this method is so effective
-
-👍 Like this short if you found it helpful!
-🔔 Turn on notifications for more quick tips
-💬 Comment below what you'd like to see next!
-
-${generateContextualHashtags(topic, category, videoLength)}
+            const content = `AI Voiceover Script
+Generated: ${new Date().toLocaleString()}
+Topic: ${topic}
+Audience: ${selectedAudience}
+Duration: ${selectedDuration} minute${selectedDuration > 1 ? 's' : ''}
 
 ---
-Thanks for watching! Make sure to SUBSCRIBE for more bite-sized content!`;
-            } else {
-                description = `🎯 Master ${topicTitle} with this comprehensive guide! 
 
-In this detailed tutorial, you'll discover everything you need to know about ${topicTitle}. Whether you're a complete beginner or looking to advance your skills, this video covers all the essential techniques and strategies that actually work.
+${scriptText}`;
 
-🔥 What You'll Learn:
-• Complete ${topicTitle} fundamentals and basics
-• Advanced tips and techniques from industry experts
-• Common mistakes to avoid (save time and money!)
-• Real-world examples and practical case studies
-• Latest trends and best practices for ${currentYear}
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `voiceover-script-${topic.replace(/[^a-z0-9]/gi, '-').toLowerCase()}-${timestamp}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
 
-💡 Why This Video is Different:
-I've spent months researching and testing these ${topicTitle} methods to bring you only the most effective strategies. No fluff, just actionable content that delivers real results.
-
-⚡ Key Benefits:
-By the end of this video, you'll have a solid understanding of ${topicTitle} and be ready to implement these strategies immediately. Perfect for beginners and those looking to level up their skills.
-
-🎥 Video Chapters:
-00:00 - Introduction and Overview
-02:30 - ${topicTitle} Fundamentals
-08:15 - Advanced Techniques
-15:45 - Common Mistakes to Avoid
-22:10 - Real-World Examples
-28:30 - Pro Tips and Final Thoughts
-
-👍 If this video helps you master ${topicTitle}, please LIKE and SUBSCRIBE for more quality content!
-💬 Drop a comment below with your questions or share your ${topicTitle} experiences
-📤 Share this video with anyone who might benefit from learning ${topicTitle}
-
-${generateContextualHashtags(topic, category, videoLength)}
-
----
-🔔 Turn on notifications to never miss new videos!
-📱 Follow me on social media for daily tips and updates
-💌 Business inquiries: contact@example.com
-
-Thanks for watching! Your support means everything to me! ❤️`;
+        // Initialize default audience selection
+        document.addEventListener('DOMContentLoaded', function () {
+            // Auto-select students as default
+            const defaultCard = document.querySelector('.audience-card:nth-child(2)');
+            if (defaultCard) {
+                selectAudience('students', defaultCard);
             }
+        });
 
-            const metrics = {
-                wordCount: description.split(' ').length,
-                charCount: description.length,
-                readability: videoLength === 'short' ? "Very Easy" : "Easy to read",
-                seoScore: Math.floor(Math.random() * 21) + 80 // 80-100
-            };
-
-            return {
-                description: description,
-                metrics: metrics
-            };
-        }
-
-        function generateContextualHashtags(topic, category, videoLength) {
-            const categoryHashtags = FREE_DATA.hashtagDatabase[category] || [];
-            const topicWords = topic.toLowerCase().split(' ').filter(word => word.length > 2);
-            const topicHashtags = topicWords.map(word =>
-                '#' + capitalizeWords(word).replace(/\s+/g, '')
-            );
-
-            // Add video length specific hashtags
-            const lengthHashtags = videoLength === 'short'
-                ? ['#Shorts', '#YouTubeShorts', '#ShortVideo', '#QuickTips']
-                : ['#LongVideo', '#DeepDive', '#FullGuide', '#InDepth'];
-
-            const allHashtags = [
-                ...topicHashtags,
-                ...categoryHashtags,
-                ...FREE_DATA.trendingHashtags,
-                ...lengthHashtags
-            ];
-
-            const uniqueHashtags = [...new Set(allHashtags)];
-            return uniqueHashtags.slice(0, 8).join(' ');
-        }
-
-        function detectTopicCategory(topic) {
-            const topicLower = topic.toLowerCase();
-
-            const categoryKeywords = {
-                tech: ['technology', 'tech', 'software', 'app', 'digital', 'computer', 'ai', 'artificial intelligence'],
-                coding: ['programming', 'code', 'javascript', 'python', 'web development', 'developer', 'coding'],
-                cooking: ['cooking', 'recipe', 'food', 'kitchen', 'baking', 'chef', 'meal'],
-                fitness: ['fitness', 'workout', 'exercise', 'gym', 'health', 'training', 'muscle'],
-                gaming: ['gaming', 'game', 'video game', 'esports', 'streaming', 'gamer'],
-                business: ['business', 'entrepreneur', 'marketing', 'finance', 'startup', 'money', 'investing'],
-                education: ['education', 'learning', 'study', 'tutorial', 'course', 'teaching', 'school'],
-                travel: ['travel', 'vacation', 'trip', 'adventure', 'destination', 'tourism'],
-                lifestyle: ['lifestyle', 'life', 'daily', 'routine', 'habits', 'productivity', 'motivation']
-            };
-
-            for (const [category, keywords] of Object.entries(categoryKeywords)) {
-                if (keywords.some(keyword => topicLower.includes(keyword))) {
-                    return category;
-                }
+        // Enter key support for topic input
+        document.getElementById('topic').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                generateScript();
             }
-
-            return 'general';
-        }
-
-        function capitalizeWords(str) {
-            return str.replace(/\b\w+/g, word =>
-                word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-            );
-        }
-
-        function displayResults(titleResult, hashtagsResult, descriptionResult) {
-            // Display title
-            document.getElementById('generatedTitle').textContent = titleResult.title;
-
-            // Display title metrics
-            const titleMetrics = document.getElementById('titleMetrics');
-            titleMetrics.innerHTML = `
-                <span class="metric-badge">Length: ${titleResult.metrics.length} chars</span>
-                <span class="metric-badge">Words: ${titleResult.metrics.words}</span>
-                <span class="metric-badge">Engagement: ${titleResult.metrics.engagement}%</span>
-                <span class="metric-badge">SEO Score: ${titleResult.metrics.seoScore}%</span>
-            `;
-
-            // Display hashtags
-            const hashtagsGrid = document.getElementById('hashtagsGrid');
-            hashtagsGrid.innerHTML = '';
-
-            hashtagsResult.hashtags.forEach((hashtag, index) => {
-                const isTrending = index < hashtagsResult.trendingCount;
-                const hashtagElement = document.createElement('div');
-                hashtagElement.className = 'hashtag-item';
-                hashtagElement.textContent = hashtag;
-                hashtagElement.addEventListener('click', () => {
-                    navigator.clipboard.writeText(hashtag);
-                    showToast('Hashtag copied!');
-                });
-
-                if (isTrending) {
-                    const trendingIndicator = document.createElement('div');
-                    trendingIndicator.className = 'trending-indicator';
-                    hashtagElement.appendChild(trendingIndicator);
-                }
-
-                hashtagsGrid.appendChild(hashtagElement);
-            });
-
-            // Display description
-            document.getElementById('generatedDescription').textContent = descriptionResult.description;
-
-            // Display description metrics
-            const descriptionMetrics = document.getElementById('descriptionMetrics');
-            descriptionMetrics.innerHTML = `
-                <div class="metric-item">
-                    <div class="metric-value">${descriptionResult.metrics.wordCount}</div>
-                    <div class="metric-label">Words</div>
-                </div>
-                <div class="metric-item">
-                    <div class="metric-value">${descriptionResult.metrics.charCount}</div>
-                    <div class="metric-label">Characters</div>
-                </div>
-                <div class="metric-item">
-                    <div class="metric-value">${descriptionResult.metrics.readability}</div>
-                    <div class="metric-label">Readability</div>
-                </div>
-                <div class="metric-item">
-                    <div class="metric-value">${descriptionResult.metrics.seoScore}%</div>
-                    <div class="metric-label">SEO Score</div>
-                </div>
-            `;
-        }
-
-        function copyContent(type) {
-            let content = '';
-
-            switch (type) {
-                case 'title':
-                    content = currentContent.title;
-                    break;
-                case 'hashtags':
-                    content = currentContent.hashtags.join(' ');
-                    break;
-                case 'description':
-                    content = currentContent.description;
-                    break;
-            }
-
-            navigator.clipboard.writeText(content);
-            showToast(`Copied ${type} to clipboard!`);
-        }
+        });
     </script>
 </body>
 
